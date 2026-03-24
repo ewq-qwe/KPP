@@ -3,7 +3,6 @@ package ua.pavliyk
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,25 +14,39 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.painterResource
-
-import myapplication.composeapp.generated.resources.Res
-import myapplication.composeapp.generated.resources.compose_multiplatform
+import co.touchlab.kermit.Logger
 
 @Composable
 @Preview
 fun App() {
     MaterialTheme {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+        var showContent by remember { mutableStateOf(false) }
+        Column(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.primaryContainer)
+                .safeContentPadding()
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(
-                text = "Hello World!",
-                fontSize = 30.sp
-            )
-
+            Button(onClick = {
+                showContent = !showContent
+                Logger.i { "Logger test." }
+            }) {
+                Text("Click me!")
+            }
+            AnimatedVisibility(showContent) {
+                val currentTime = remember { TimeZoneHelperImpl().currentTime() }
+                val washingtonTime = remember { TimeZoneHelperImpl().getTime("America/New_York") }
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                )
+                {
+                    Text("Current time: $currentTime")
+                    Text("Washington time: $washingtonTime")
+                }
+            }
         }
     }
 }
