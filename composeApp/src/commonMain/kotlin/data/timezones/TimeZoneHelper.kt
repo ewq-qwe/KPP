@@ -1,4 +1,4 @@
-package ua.pavliyk
+package ua.pavliyk.data.timezones
 
 interface TimeZoneHelper {
     fun getTimeZoneStrings(): List<String>
